@@ -11,7 +11,7 @@ import javax.persistence.ManyToOne;
 @Entity
 @Data
 @NoArgsConstructor
-public class Comment {
+public class Comment extends Auditable{
 
 
     @Id
@@ -20,7 +20,7 @@ public class Comment {
     private String body;
 
     // link
-    @ManyToOne  
+    @ManyToOne
     private Link link;
 
 }
