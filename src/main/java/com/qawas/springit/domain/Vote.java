@@ -13,6 +13,7 @@ import javax.persistence.Id;
 @NoArgsConstructor
 public class Vote {
 
+
     @Id
     @GeneratedValue
     private long id;
