@@ -1,5 +1,6 @@
 package com.qawas.springit.bootstrap;
 
+import com.qawas.springit.domain.Comment;
 import com.qawas.springit.domain.Link;
 import com.qawas.springit.domain.Role;
 import com.qawas.springit.domain.User;
@@ -47,7 +48,17 @@ public class DatabaseLoader implements CommandLineRunner {
         links.put("Postman Tutorial","https://www.youtube.com/watch?v=9SGDpanrc8U");
 
         links.forEach((k,v) -> {
-            linkRepository.save(new Link(k,v));
+            Link link = new Link(k, v);
+            linkRepository.save(link);
+
+            Comment spring = new Comment("Thank you for this link related to Spring Boot. I love it, great post!",link);
+            Comment security = new Comment("I love that you're talking about Spring Security",link);
+            Comment pwa = new Comment("What is this Progressive Web App thing all about? PWAs sound really cool.",link);
+            Comment[] comments = {spring,security,pwa};
+            for(Comment comment : comments) {
+                commentRepository.save(comment);
+                link.addComment(comment);
+            }
         });
 
         long linkCount = linkRepository.count();

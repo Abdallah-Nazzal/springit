@@ -23,8 +23,8 @@ public class VoteController {
     }
 
     @Secured({"ROLE_USER"})
-    @GetMapping("/vote/link/{linkID}/direction/{direction}/voteCount/{voteCount}")
-    public int vote(@PathVariable long linkID, @PathVariable short direction, @PathVariable int voteCount) {
+    @GetMapping("/vote/link/{linkID}/direction/{direction}/votecount/{voteCount}")
+    public int vote(@PathVariable Long linkID, @PathVariable short direction, @PathVariable int voteCount) {
         Optional<Link> optionalLink = linkRepository.findById(linkID);
         if( optionalLink.isPresent() ) {
             Link link = optionalLink.get();
@@ -36,7 +36,6 @@ public class VoteController {
             linkRepository.save(link);
             return updatedVoteCount;
         }
-
         return voteCount;
     }
 }
