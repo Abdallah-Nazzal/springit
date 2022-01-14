@@ -3,8 +3,7 @@ package com.qawas.springit.controller;
 
 import com.qawas.springit.domain.Comment;
 import com.qawas.springit.domain.Link;
-import com.qawas.springit.repository.CommentRepository;
-import com.qawas.springit.repository.LinkRepository;
+import com.qawas.springit.service.CommentService;
 import com.qawas.springit.service.LinkService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,11 +25,11 @@ public class LinkController {
     private static final Logger logger = LoggerFactory.getLogger(LinkController.class);
 
     private LinkService linkService;
-    private CommentRepository commentRepository;
+    private CommentService commentService;
 
-    public LinkController(LinkService linkService, CommentRepository commentRepository){
+    public LinkController(LinkService linkService, CommentService commentService){
         this.linkService = linkService;
-        this.commentRepository = commentRepository;
+        this.commentService = commentService;
     }
 
     @GetMapping("/")
@@ -68,7 +67,7 @@ public class LinkController {
             model.addAttribute("link", link);
             return "link/submit";
         } else {
-            linkService.save(link);
+            linkService .save(link);
             logger.info("New link was saved successfully");
             redirectAttributes
                     .addAttribute("id", link.getId())
@@ -83,7 +82,7 @@ public class LinkController {
         if( bindingResult.hasErrors() ) {
             logger.info("There was a problem adding a new comment");
         } else {
-            commentRepository.save(comment);
+            commentService.save(comment);
             logger.info("New comment was saved successfully.");
         }
         return "redirect:/link/" + comment.getLink().getId();
