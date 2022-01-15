@@ -1,5 +1,6 @@
 package com.qawas.springit.domain;
 
+import com.qawas.springit.domain.validator.PasswordsMatch;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
 @Setter
 @ToString
 @NoArgsConstructor
+@PasswordsMatch
 public class User implements UserDetails {
 
     @Id @GeneratedValue
@@ -65,6 +67,10 @@ public class User implements UserDetails {
     @NotEmpty(message = "Please enter an alias")
     @Column(nullable = false, unique = true)
     private String alias;
+
+    @Transient
+    @NotEmpty(message = "Please enter password confirmation")
+    private String confirmPassword;
 
     public String getFullName() {
         return firstName + " " + lastName;

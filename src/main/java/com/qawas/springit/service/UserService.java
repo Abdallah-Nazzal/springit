@@ -27,6 +27,8 @@ public class UserService {
         String secret = "{bcrypt}" + encoder.encode("password");
         user.setPassword(secret);
 
+        user.setConfirmPassword(secret);
+
         user.addRole(roleService.findByName("ROLE_USER"));
 
         save(user);
