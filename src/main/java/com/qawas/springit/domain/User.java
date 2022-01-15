@@ -6,6 +6,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -45,6 +46,30 @@ public class User implements UserDetails {
     public void addRole(Role role) {
         roles.add(role);
     }
+
+
+
+    @NonNull
+    @NotEmpty(message = "Please enter your first name")
+    private String firstName;
+
+    @NonNull
+    @NotEmpty(message = "Please enter your last name")
+    private String lastName;
+
+    @Transient
+    @Setter(AccessLevel.NONE)
+    private String fullName;
+
+    @NonNull
+    @NotEmpty(message = "Please enter an alias")
+    @Column(nullable = false, unique = true)
+    private String alias;
+
+    public String getFullName() {
+        return firstName + " " + lastName;
+    }
+
 
     public void addRoles(Set<Role> role) {
         roles.forEach(this::addRole);

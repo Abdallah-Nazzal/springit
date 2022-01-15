@@ -25,6 +25,8 @@ public class DatabaseLoader implements CommandLineRunner {
     private final RoleRepository roleRepository;
     private final UserRepository userRepository;
 
+    private Map<String, User> users = new HashMap<>();
+
     public DatabaseLoader(LinkRepository linkRepository, CommentRepository commentRepository, RoleRepository roleRepository, UserRepository userRepository) {
         this.linkRepository = linkRepository;
         this.commentRepository = commentRepository;
@@ -48,7 +50,15 @@ public class DatabaseLoader implements CommandLineRunner {
         links.put("Postman Tutorial","https://www.youtube.com/watch?v=9SGDpanrc8U");
 
         links.forEach((k,v) -> {
+            User u1 = users.get("qawas@gmail.com");
+            User u2 = users.get("admin@gmail.com");
             Link link = new Link(k, v);
+            if(k.startsWith("Spring")) {
+                link.setUser(u1);
+            } else {
+                link.setUser(u2);
+            }
+
             linkRepository.save(link);
 
             Comment spring = new Comment("Thank you for this link related to Spring Boot. I love it, great post!",link);
@@ -71,21 +81,22 @@ public class DatabaseLoader implements CommandLineRunner {
 
         Role userRole = new Role("ROLE_USER");
         roleRepository.save(userRole);
+        User user = new User("qawas@gmail.com", secret, true, "Abdallah", "Qawas","Koka");
+        user.addRole(userRole);
+        userRepository.save(user);
+        users.put("qawas@gmail.com",user);
 
         Role adminRole = new Role("ROLE_ADMIN");
         roleRepository.save(adminRole);
-
-        User user = new User("qawas@gmail.com", secret, true);
-        user.addRole(userRole);
-        userRepository.save(user);
-
-        User admin = new User("admin@gmail.com", secret, true);
+        User admin = new User("admin@gmail.com", secret, true, "admin", "admin", "admin");
         admin.addRole(adminRole);
         userRepository.save(admin);
+        users.put("admin@gmail.com",admin);
 
-        User master = new User("master@gmail.com", secret, true);
+        User master = new User("master@gmail.com", secret,  true, "master", "master","master");
         master.addRoles(new HashSet<>(Arrays.asList(userRole, adminRole)));
         userRepository.save(master);
+        users.put("master@gmail.com", master);
 
         Long numberOfUsers = userRepository.count();
         System.out.println(numberOfUsers + " users have just inserted in the system");
