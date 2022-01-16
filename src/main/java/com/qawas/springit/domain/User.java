@@ -72,6 +72,8 @@ public class User implements UserDetails {
     @NotEmpty(message = "Please enter password confirmation")
     private String confirmPassword;
 
+    private String activationCode;
+
     public String getFullName() {
         return firstName + " " + lastName;
     }
